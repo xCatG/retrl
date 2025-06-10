@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Retro Typewriter</string>
+    <string name="title_activity_typewriter">TypewriterActivity</string>
+</resources>
