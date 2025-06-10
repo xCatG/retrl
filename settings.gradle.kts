@@ -1,12 +1,6 @@
 pluginManagement {
     repositories {
-        google {
-            content {
-                includeGroupByRegex("com\\.android.*")
-                includeGroupByRegex("com\\.google.*")
-                includeGroupByRegex("androidx.*")
-            }
-        }
+        google()
         mavenCentral()
         gradlePluginPortal()
     }
@@ -19,5 +13,11 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Retro Typewriter"
+rootProject.name = "VintageTypewriterApp"
 include(":app")
+include(":core:data")
+include(":core:domain")
+include(":core:ui")
+include(":core:sound")
+include(":feature:editor")
+include(":feature:export")

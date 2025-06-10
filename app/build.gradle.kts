@@ -1,61 +1,124 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.ksp)
+    // Firebase
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.firebase.perf)
+    // Secrets
+    alias(libs.plugins.secrets.gradle.plugin)
 }
 
 android {
-    namespace = "com.cattailsw.retrl"
-    compileSdk = 36
+    namespace = "com.cattailsw.retrl.app" // Changed
+    compileSdk = 34 // Or your target SDK
 
     defaultConfig {
-        applicationId = "com.cattailsw.retrl"
-        minSdk = 26
-        targetSdk = 36
+        applicationId = "com.cattailsw.retrl" // Changed
+        minSdk = 24
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.cattailsw.retrl.CustomTestRunner" // Changed
+        vectorDrawables {
+            useSupportLibrary = true
+        }
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true // Enable minification for release
+            isShrinkResources = true // Shrink resources for release
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            // Optionally, specify signing configs for release builds
+            // signingConfig signingConfigs.getByName("release")
+        }
+        debug {
+            // Optionally, configure debug builds (e.g., applicationIdSuffix)
+            applicationIdSuffix = ".debug"
+            isMinifyEnabled = false // Typically, disable minification for debug
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_8 // Or your Java version
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "1.8" // Or your Kotlin JVM target
     }
     buildFeatures {
-        compose = true
+        compose = true // Enable Jetpack Compose
+        // buildConfig = true // Enable BuildConfig generation if needed
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
+    }
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
+    // Disable resource shrinking for now, re-enable if needed
+    // shrinkResources = false
 }
 
 dependencies {
-
+    // Core Android & Jetpack
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.runtimeCompose)
     implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
+
+    // Compose BOM and UI Toolkit
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.graphics)
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.material) // Material Design 2 (for Material 3, use material3)
+
+    // Navigation
+    implementation(libs.androidx.navigation.compose)
+
+    // Hilt for Dependency Injection
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.navigation.compose) // Hilt integration for Compose Navigation
+
+    // Coroutines for asynchronous programming
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
+
+    // DataStore for preferences
+    implementation(libs.androidx.dataStore.preferences)
+
+    // Coil for image loading
+    implementation(libs.coil.kt)
+    implementation(libs.coil.kt.compose)
+
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics) // Analytics
+    implementation(libs.firebase.crashlytics) // Crash reporting
+    implementation(libs.firebase.performance) // Performance monitoring
+
+    // Testing
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
+    androidTestImplementation(libs.androidx.test.ext)
+    androidTestImplementation(libs.androidx.test.espresso.core)
+    androidTestImplementation(platform(libs.compose.bom)) // Align Compose versions for tests
+    androidTestImplementation(libs.compose.ui.test) // For Compose UI testing
+    debugImplementation(libs.compose.ui.tooling) // For Compose tooling like preview
+    debugImplementation(libs.compose.ui.test.manifest) // For Compose test manifest
+
+    // Profile Installer (Optional, for performance optimization)
+    implementation(libs.androidx.profileinstaller)
 }
+
+// Ensure KSP is correctly configured if used for other libraries beyond Hilt
+// tasks.withType<com.google.devtools.ksp.gradle.KspTask>().configureEach {
+//    // Configure KSP options if needed
+// }

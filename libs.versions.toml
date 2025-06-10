@@ -1,0 +1,119 @@
+[versions]
+accompanist = "0.32.0"
+activity = "1.9.0"
+androidGradlePlugin = "8.5.0"
+androidxCore = "1.13.1"
+androidxEspresso = "3.5.1"
+androidxHiltNavigationCompose = "1.2.0"
+androidxLifecycle = "2.8.1"
+androidxMacroBenchmark = "1.2.4"
+androidxNavigation = "2.7.7"
+androidxProfileinstaller = "1.3.1"
+androidxTestRules = "1.5.0"
+androidxTestRunner = "1.5.2"
+androidxUiAutomator = "2.3.0"
+androidxWork = "2.9.0" # Update to latest version
+appCompat = "1.6.1" # Update to latest version / check compatibility
+coil = "2.6.0"
+composeBom = "2024.05.00"
+composeCompiler = "1.5.1" # Ensure compatibility with Kotlin version
+constraintlayout = "2.1.4" # Update to latest version / check compatibility
+coroutines = "1.8.0"
+dataStore = "1.1.1"
+espresso = "3.5.1" # Update to latest version
+firebaseBom = "33.0.0"
+firebaseCrashlyticsPlugin = "3.0.1"
+firebasePerfPlugin = "1.4.2"
+hilt = "2.51.1"
+hiltExt = "1.2.0" # Update to latest version / check compatibility
+junit = "4.13.2"
+junitExt = "1.1.5"
+kotlin = "1.9.0" # Ensure compatibility with Compose Compiler & AGP
+kotlinxSerializationJson = "1.6.3"
+ksp = "1.9.0-1.0.13" # Match Kotlin version
+material = "1.12.0" # Update to latest version
+okhttp = "4.12.0"
+playServicesWearable = "18.2.0"
+preference = "1.2.1" # Update to latest version
+recyclerView = "1.3.2" # Update to latest version
+retrofit = "2.11.0"
+retrofitKotlinxSerializationJson = "1.0.0"
+room = "2.6.1"
+secretsGradlePlugin = "2.0.1"
+wear = "1.3.0" # Update to latest version
+wearCompose = "1.3.0" # Update to latest version
+wearTools = "1.0.0" # Update to latest version
+
+[libraries]
+accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
+androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidxCore" } # Check for specific splashscreen version if needed
+androidx-dataStore-core = { group = "androidx.datastore", name = "datastore-core", version.ref = "dataStore" }
+androidx-dataStore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "dataStore" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidxEspresso" }
+androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
+androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "androidxLifecycle" }
+androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
+androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
+androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigation" }
+androidx-preference-ktx = { group = "androidx.preference", name = "preference-ktx", version.ref = "preference" }
+androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "androidxProfileinstaller" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
+androidx-test-ext = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitExt" }
+androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "androidxTestRules" }
+androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTestRunner" }
+androidx-test-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "androidxUiAutomator" }
+androidx-wear-compose-foundation = { group = "androidx.wear.compose", name = "wear-compose-foundation", version.ref = "wearCompose" }
+androidx-wear-compose-material = { group = "androidx.wear.compose", name = "wear-compose-material", version.ref = "wearCompose" }
+androidx-wear-compose-navigation = { group = "androidx.wear.compose", name = "wear-compose-navigation", version.ref = "wearCompose" } # Check if specific navigation version for wear is needed
+androidx-work-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "androidxWork" }
+coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
+coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+compose-ui = { group = "androidx.compose.ui", name = "ui" }
+compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" } # Added based on common usage with Compose
+compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4" } # For Compose UI testing
+compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" } # For Compose UI testing
+compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" } # For Compose UI tooling like preview
+compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" } # For Compose UI tooling like preview
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
+firebase-performance = { group = "com.google.firebase", name = "firebase-performance-ktx" }
+google-play-services-wearable = { group = "com.google.android.gms", name = "play-services-wearable", version.ref = "playServicesWearable" }
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" } # General Hilt compiler, if needed separately
+hilt-core = { group = "com.google.dagger", name = "hilt-core", version.ref = "hilt" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin" }
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlinx-coroutines-play-services = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-play-services", version.ref = "coroutines" } # For coroutines with Play Services
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" } # For OkHttp logging
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-kotlin-serialization = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofitKotlinxSerializationJson" }
+ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "composeCompiler" } # Ensure this aligns with compose versions
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+android-test = { id = "com.android.test", version.ref = "androidGradlePlugin" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsPlugin" }
+firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebasePerfPlugin" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+secrets-gradle-plugin = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secretsGradlePlugin" }
