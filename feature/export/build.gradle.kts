@@ -3,27 +3,25 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
     namespace = "com.cattailsw.retrl.feature.export"
-    compileSdk = 34 // Or your project's compileSdk
+    compileSdk = 36 // Or your project's compileSdk
 
     defaultConfig {
         minSdk = 26 // Or your project's minSdk
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
         jvmTarget = "1.8"
     }
     buildFeatures {
         compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.11" // Match app module and other features
     }
 }
 
@@ -49,7 +47,7 @@ dependencies {
 
     implementation(libs.androidx.hilt.navigation.compose) // Corrected: libs.hilt.navigation.compose to libs.androidx.hilt.navigation.compose
 
-    implementation(libs.androidx.lifecycle.runtime.ktx) // Corrected: libs.lifecycle.runtime.ktx to libs.androidx.lifecycle.runtime.ktx
+    implementation(libs.androidx.lifecycle.runtime.compose) // Corrected: libs.lifecycle.runtime.ktx to libs.androidx.lifecycle.runtime.ktx
     implementation(libs.androidx.lifecycle.viewmodel.compose) // Corrected: libs.lifecycle.viewmodel.compose to libs.androidx.lifecycle.viewmodel.compose
 
     // Test dependencies (optional for pure placeholders, but good practice)

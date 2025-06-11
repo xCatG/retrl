@@ -8,16 +8,17 @@ plugins {
     alias(libs.plugins.firebase.perf)
     // Secrets
     alias(libs.plugins.secrets.gradle.plugin)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
     namespace = "com.cattailsw.retrl.app" // Changed
-    compileSdk = 34 // Or your target SDK
+    compileSdk = 36 // Or your target SDK
 
     defaultConfig {
         applicationId = "com.cattailsw.retrl" // Changed
-        minSdk = 24
-        targetSdk = 34
+        minSdk = 26
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -45,18 +46,15 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8 // Or your Java version
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8" // Or your Kotlin JVM target
+        jvmTarget = "11" // Or your Kotlin JVM target
     }
     buildFeatures {
         compose = true // Enable Jetpack Compose
         // buildConfig = true // Enable BuildConfig generation if needed
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
     packaging {
         resources {
@@ -70,7 +68,7 @@ android {
 dependencies {
     // Core Android & Jetpack
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtimeCompose)
+    implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.activity.compose)
 
     // Compose BOM and UI Toolkit
@@ -78,7 +76,7 @@ dependencies {
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.graphics)
     implementation(libs.compose.ui.tooling.preview)
-    implementation(libs.material) // Material Design 2 (for Material 3, use material3)
+    implementation(libs.material3) // Material Design 2 (for Material 3, use material3)
 
     // Navigation
     implementation(libs.androidx.navigation.compose)

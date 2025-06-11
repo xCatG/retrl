@@ -2,7 +2,8 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt)
-    alias(libs.plugins.ksp) // For Hilt
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.compose.compiler) // For Hilt
 }
 
 android {
@@ -33,13 +34,10 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
     buildFeatures {
         compose = true // This feature module is UI-heavy
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
 }
 
@@ -63,8 +61,8 @@ dependencies {
     implementation(libs.androidx.activity.compose) // For Activity-level Compose setup
 
     // ViewModel and LiveData (Lifecycle)
-    implementation(libs.androidx.lifecycle.viewModelCompose) // For hiltViewModel()
-    implementation(libs.androidx.lifecycle.runtimeCompose) // For collectAsStateWithLifecycle
+    implementation(libs.androidx.lifecycle.viewmodel.compose) // For hiltViewModel()
+    implementation(libs.androidx.lifecycle.runtime.compose) // For collectAsStateWithLifecycle
 
     // Navigation
     implementation(libs.androidx.navigation.compose)

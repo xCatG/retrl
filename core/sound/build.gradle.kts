@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.cattailsw.retrl.core.sound" // **Ensure this is correct**
-    compileSdk = 34 // Or your target SDK
+    compileSdk = 36 // Or your target SDK
 
     defaultConfig {
         minSdk = 24
@@ -29,11 +29,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
     // No Compose needed for this module based on current plan
     // buildFeatures {
