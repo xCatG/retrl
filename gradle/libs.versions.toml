@@ -15,7 +15,8 @@ androidxUiAutomator = "2.3.0"
 androidxWork = "2.10.1" # Update to latest version
 appCompat = "1.6.1" # Update to latest version / check compatibility
 coil = "2.7.0"
-composeBom = "2025.06.00"
+composeBom = "2024.06.00" # Corrected BOM Version
+composeIcons = "1.6.7" # Added specific version for icons
 composeCompiler = "1.8.2" # Ensure compatibility with Kotlin version
 constraintlayout = "2.1.4" # Update to latest version / check compatibility
 coroutines = "1.10.2"
@@ -103,6 +104,9 @@ kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" } # For OkHttp logging
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+androidx-compose-material-icons-core = { group = "androidx.compose.material", name = "material-icons-core", version.ref = "composeIcons" }
+androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "composeIcons" }
+androidx-compose-ui-input = { group = "androidx.compose.ui", name = "ui-input", version.ref = "composeIcons" } # Added for ui-input
 
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }

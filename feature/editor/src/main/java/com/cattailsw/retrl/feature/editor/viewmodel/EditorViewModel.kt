@@ -80,7 +80,7 @@ class EditorViewModel @Inject constructor(
         }
     }
 
-    fun onKeyEvent(event: KeyEvent, xPos: Float, yPos: Float) {
+    fun onKeyEvent(event: androidx.compose.ui.input.key.KeyEvent, xPos: Float, yPos: Float) { // Fully qualified KeyEvent
         // This is a simplified key event to char mapping.
         // A more robust solution would handle dead keys, combinations, locales, etc.
         // For now, assuming simple ASCII or directly usable characters from key events.
@@ -97,9 +97,9 @@ class EditorViewModel @Inject constructor(
                 timestamp = System.currentTimeMillis(),
                 xPosition = xPos, // This needs to be accurately determined on canvas
                 yPosition = yPos, // This needs to be accurately determined on canvas
-                isShiftHeld = event.isShiftPressed,
-                isCtrlHeld = event.isCtrlPressed,
-                isAltHeld = event.isAltPressed
+                isShiftHeld = event.keyModifiers.isShiftPressed,
+                isCtrlHeld = event.keyModifiers.isCtrlPressed,
+                isAltHeld = event.keyModifiers.isAltPressed
             )
             _uiState.update {
                 val newKeystrokes = it.currentKeystrokes + keystroke

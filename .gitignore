@@ -9,7 +9,15 @@
 /.idea/assetWizardSettings.xml
 .DS_Store
 /build
+**/build/
+**/.gradle/
+**/generated/
+**/kspCaches/
 /captures
 .externalNativeBuild
 .cxx
+# local.properties should not have a leading slash if it can be in subdirectories
 local.properties
+# Ensure .idea is fully ignored if it's not already by more specific rules
+/.idea/
+**/.idea/

@@ -23,8 +23,8 @@ import com.cattailsw.retrl.feature.editor.state.ExportFormat
 import com.cattailsw.retrl.feature.editor.state.PlaybackState // Updated import
 import com.cattailsw.retrl.feature.editor.viewmodel.EditorViewModel // Updated import
 
-// Data class for playback actions
-internal data class PlaybackAction(
+// Data class for playback actions - changed to public (default)
+data class PlaybackAction(
     val onTogglePlay: () -> Unit,
     val onSpeedChange: (Float) -> Unit,
     // val onSeek: (Float) -> Unit // Future: for seeking in playback
@@ -56,7 +56,7 @@ fun EditorScreen(
                     title = { Text(uiState.currentSession?.title ?: "New Session") },
                     actions = {
                         IconButton(onClick = { viewModel.onSaveSession() }) {
-                            Icon(Icons.Filled.Save, contentDescription = "Save Session")
+                            Icon(androidx.compose.material.icons.Icons.Filled.Save, contentDescription = "Save Session") // FQN
                         }
                         IconButton(onClick = { viewModel.onShowExportDialog(true) }) {
                             Icon(Icons.Filled.MoreVert, contentDescription = "Export Options")
@@ -208,7 +208,7 @@ fun PlaybackControls(
     ) {
         IconButton(onClick = actions.onTogglePlay) {
             Icon(
-                imageVector = if (playbackState.isPlaying) Icons.Filled.Stop else Icons.Filled.PlayArrow,
+                imageVector = if (playbackState.isPlaying) androidx.compose.material.icons.Icons.Filled.Stop else androidx.compose.material.icons.Icons.Filled.PlayArrow, // FQN
                 contentDescription = if (playbackState.isPlaying) "Stop Playback" else "Start Playback"
             )
         }

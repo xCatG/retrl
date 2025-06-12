@@ -46,11 +46,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "11" // Or your Kotlin JVM target
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true // Enable Jetpack Compose
@@ -66,6 +66,13 @@ android {
 }
 
 dependencies {
+    // Project Modules
+    implementation(project(":core:domain"))
+    implementation(project(":core:data"))
+    implementation(project(":core:ui"))
+    implementation(project(":feature:editor"))
+    implementation(project(":feature:export"))
+
     // Core Android & Jetpack
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.compose)
@@ -76,7 +83,8 @@ dependencies {
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.graphics)
     implementation(libs.compose.ui.tooling.preview)
-    implementation(libs.material3) // Material Design 2 (for Material 3, use material3)
+    implementation(libs.material3) // Material Design 3 (Jetpack Compose)
+    implementation(libs.material)  // Material Design 2 (for XML themes and components)
 
     // Navigation
     implementation(libs.androidx.navigation.compose)
