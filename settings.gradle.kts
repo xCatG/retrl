@@ -21,3 +21,9 @@ dependencyResolutionManagement {
 
 rootProject.name = "Retro Typewriter"
 include(":app")
+include(":core:domain")
+include(":core:data")
+include(":core:ui")
+include(":core:sound")
+include(":feature:editor")
+include(":feature:export")
