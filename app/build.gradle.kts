@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.hilt.android.gradle)
+    id("org.jetbrains.kotlin.kapt")
 }
 
 android {
@@ -58,4 +60,10 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation(project(":feature:editor"))
+    implementation(project(":core:data"))
+    implementation(project(":core:sound"))
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 }
