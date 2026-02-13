@@ -29,31 +29,27 @@ class TypewriterTest {
     }
 
     @Test
-    fun backspaceRemovesLastChar() {
+    fun carriageReturnStartsNewLine() {
         composeTestRule.setContent {
             TypingCanvas()
         }
 
-        // Type "Hello"
+        // Type "Hi" then Enter then "You"
+        // Note: performTextInput sends text. The implementation of BasicTextField 
+        // might treat '\n' in the string as an Enter key if configured, 
+        // or we might need to send the key event.
+        // Our ViewModel.handleKey('\n') handles the logic.
+        // The UI's BasicTextField onValueChange splits the string and calls handleKey.
+        
         composeTestRule.onNodeWithTag("HiddenInput")
-            .performTextInput("Hello")
+            .performTextInput("Hi\nYou")
+
+        // The canvas description is constructed from `keystrokes.map { it.char }.joinToString("")`
+        // So it should contain "Hi\nYou". 
+        // While the *visual* rendering puts "You" on the next line (checked via visual inspection or bounds),
+        // the *semantic* content should verify the data model integrity.
         
-        // Note: performTextInput doesn't easily support special keys like Backspace 
-        // directly in the same way strictly via text input on some modifiers.
-        // However, TypewriterActivity handles 'onKeyEvent'.
-        // To strictly test 'Back', we might need `performKeyPress`.
-        // For simplicity in this "demo" test, let's stick to adding text first.
-        // But let's try injecting the backspace char if our logic supports it (it handles '\b' in ViewModel, 
-        // but the Activity onKeyEvent captures the key event, not the char).
-        
-        // Let's rely on the fact that we can just verify addition for now to prove it works.
-        // If we want to test deletion, we need to trigger the Key Event.
-        
-        /* 
-           composeTestRule.onNodeWithTag("HiddenInput")
-               .performKeyPress(KeyEvent(NativeKeyEvent(ACTION_DOWN, KEYCODE_DEL)))
-        */
-        // Since performKeyPress is experimental/complex to setup without full context, 
-        // let's stick to the positive case "typing works".
+        composeTestRule.onNodeWithTag("TypewriterCanvas")
+            .assertContentDescriptionEquals("Hi\nYou")
     }
 }
