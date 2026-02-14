@@ -40,6 +40,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.cattailsw.retrl.ui.components.TypewriterToolbar
 import com.cattailsw.retrl.ui.theme.RetroTypewriterTheme
 
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.mutableStateListOf
+
 class TypewriterActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,17 +95,40 @@ fun TypingCanvas(
         }
     }
 
+    TypingCanvasContent(
+        modifier = modifier,
+        keystrokes = viewModel.keystrokes,
+        onInput = { char ->
+            viewModel.handleKey(char)
+            if (char == '\n') {
+                soundManager.playCarriageReturn()
+            } else {
+                soundManager.playKeyClick()
+            }
+        },
+        onLineHeightMeasured = { height ->
+            viewModel.lineHeight = height
+        }
+    )
+}
+
+@Composable
+fun TypingCanvasContent(
+    modifier: Modifier = Modifier,
+    keystrokes: List<Keystroke>,
+    onInput: (Char) -> Unit,
+    onLineHeightMeasured: (Float) -> Unit = {}
+) {
     val textMeasurer = rememberTextMeasurer()
-    val keystrokes = viewModel.keystrokes
-    
     val focusRequester = remember { FocusRequester() }
     var textInput by remember { mutableStateOf(TextFieldValue("")) }
 
     Box(modifier = modifier.fillMaxSize()) {
+        val fullText = keystrokes.map { it.char }.joinToString("")
         Canvas(modifier = Modifier
             .fillMaxSize()
             .testTag("TypewriterCanvas")
-            .semantics { contentDescription = viewModel.getText() }
+            .semantics { contentDescription = fullText }
         ) {
             val style = TextStyle(
                 fontFamily = FontFamily.Monospace,
@@ -110,7 +137,7 @@ fun TypingCanvas(
             )
             
             val measureResult = textMeasurer.measure("M", style)
-            viewModel.lineHeight = measureResult.size.height * 1.2f
+            onLineHeightMeasured(measureResult.size.height * 1.2f)
 
             keystrokes.forEach { key ->
                 if (key.char == '\n') return@forEach
@@ -133,12 +160,7 @@ fun TypingCanvas(
                 val newText = newValue.text
                 if (newText.isNotEmpty()) {
                     newText.forEach { char ->
-                        viewModel.handleKey(char)
-                        if (char == '\n') {
-                            soundManager.playCarriageReturn()
-                        } else {
-                            soundManager.playKeyClick()
-                        }
+                        onInput(char)
                     }
                     textInput = TextFieldValue("")
                 } else {
@@ -159,5 +181,44 @@ fun TypingCanvas(
 
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()
+    }
+}
+
+@Preview(name = "Phone", device = Devices.PIXEL_4, showBackground = true)
+@Preview(name = "Tablet", device = Devices.PIXEL_C, showBackground = true)
+@Preview(name = "Foldable", device = Devices.FOLDABLE, showBackground = true)
+@Composable
+fun TypingCanvasPreview() {
+    // Mock data
+    val dummyKeystrokes = remember {
+        val list = mutableStateListOf<Keystroke>()
+        var x = 0f
+        var y = 0f
+        val text = "Hello Preview!\nThis is a typewriter."
+        text.forEach { char ->
+            if (char == '\n') {
+                x = 0f
+                y += 40f // approx line height
+                list.add(Keystroke(char, x, y))
+            } else {
+                list.add(Keystroke(char, x, y))
+                x += 15f // approx char width
+            }
+        }
+        list
+    }
+
+    RetroTypewriterTheme {
+        Scaffold(
+            bottomBar = {
+                TypewriterToolbar(onReturn = {}, onTab = {}, onBackspace = {})
+            }
+        ) { innerPadding ->
+            TypingCanvasContent(
+                modifier = Modifier.padding(innerPadding),
+                keystrokes = dummyKeystrokes,
+                onInput = {}
+            )
+        }
     }
 }
