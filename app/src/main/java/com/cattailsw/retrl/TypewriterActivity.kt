@@ -24,9 +24,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.key.Key
-import androidx.compose.ui.input.key.key
-import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
@@ -40,6 +37,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.cattailsw.retrl.ui.components.TypewriterToolbar
 import com.cattailsw.retrl.ui.theme.RetroTypewriterTheme
 
 class TypewriterActivity : ComponentActivity() {
@@ -47,9 +45,34 @@ class TypewriterActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val viewModel: TypewriterViewModel = viewModel()
+            val context = LocalContext.current
+            val soundManager = remember { SoundManager(context) }
+
             RetroTypewriterTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    TypingCanvas(modifier = Modifier.padding(innerPadding))
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    bottomBar = {
+                        TypewriterToolbar(
+                            onReturn = {
+                                viewModel.handleKey('\n')
+                                soundManager.playCarriageReturn()
+                            },
+                            onTab = { 
+                                viewModel.handleTab() 
+                            },
+                            onBackspace = { 
+                                viewModel.handleKey('\b')
+                                soundManager.playKeyClick()
+                            }
+                        )
+                    }
+                ) { innerPadding ->
+                    TypingCanvas(
+                        modifier = Modifier.padding(innerPadding),
+                        viewModel = viewModel,
+                        soundManager = soundManager
+                    )
                 }
             }
         }
@@ -59,12 +82,9 @@ class TypewriterActivity : ComponentActivity() {
 @Composable
 fun TypingCanvas(
     modifier: Modifier = Modifier,
-    viewModel: TypewriterViewModel = viewModel()
+    viewModel: TypewriterViewModel,
+    soundManager: SoundManager
 ) {
-    val context = LocalContext.current
-    val soundManager = remember { SoundManager(context) }
-    
-    // Dispose SoundManager when the composable leaves the composition
     DisposableEffect(Unit) {
         onDispose {
             soundManager.release()
@@ -74,19 +94,14 @@ fun TypingCanvas(
     val textMeasurer = rememberTextMeasurer()
     val keystrokes = viewModel.keystrokes
     
-    // Focus requester to ensure the hidden text field captures input
     val focusRequester = remember { FocusRequester() }
-
-    // Input state
     var textInput by remember { mutableStateOf(TextFieldValue("")) }
 
     Box(modifier = modifier.fillMaxSize()) {
-        // The Canvas renders the typewriter output
-        val fullText = keystrokes.map { it.char }.joinToString("")
         Canvas(modifier = Modifier
             .fillMaxSize()
             .testTag("TypewriterCanvas")
-            .semantics { contentDescription = fullText }
+            .semantics { contentDescription = viewModel.getText() }
         ) {
             val style = TextStyle(
                 fontFamily = FontFamily.Monospace,
@@ -94,14 +109,14 @@ fun TypingCanvas(
                 color = Color.Black
             )
             
-            // Measure grid based on a standard character
             val measureResult = textMeasurer.measure("M", style)
-            val charWidth = measureResult.size.width.toFloat()
-            val lineHeight = measureResult.size.height * 1.2f
+            viewModel.lineHeight = measureResult.size.height * 1.2f
 
             keystrokes.forEach { key ->
-                val x = key.col * charWidth + 40f // Add some left margin
-                val y = key.row * lineHeight + 40f // Add some top margin
+                if (key.char == '\n') return@forEach
+
+                val x = key.x + 40f 
+                val y = key.y + 40f
 
                 drawText(
                     textMeasurer = textMeasurer,
@@ -112,13 +127,11 @@ fun TypingCanvas(
             }
         }
 
-        // Hidden input field
         BasicTextField(
             value = textInput,
             onValueChange = { newValue ->
                 val newText = newValue.text
                 if (newText.isNotEmpty()) {
-                    // Send each new character to the ViewModel
                     newText.forEach { char ->
                         viewModel.handleKey(char)
                         if (char == '\n') {
@@ -127,32 +140,15 @@ fun TypingCanvas(
                             soundManager.playKeyClick()
                         }
                     }
-                    // Clear the input to keep it "stateless"
                     textInput = TextFieldValue("")
                 } else {
-                    // If empty, it might be a backspace that cleared it, 
-                    // or it was already empty.
-                    // We handle backspace via onKeyEvent mostly.
                     textInput = newValue
                 }
             },
             modifier = Modifier
                 .testTag("HiddenInput")
-                .alpha(0f) // Invisible
-                .focusRequester(focusRequester)
-                .onKeyEvent { event ->
-                    if (event.key == Key.Backspace && event.nativeKeyEvent.action == android.view.KeyEvent.ACTION_DOWN) {
-                        viewModel.handleKey('\b')
-                        soundManager.playKeyClick() // Backspace also clicks
-                        true
-                    } else if (event.key == Key.Enter && event.nativeKeyEvent.action == android.view.KeyEvent.ACTION_DOWN) {
-                         viewModel.handleKey('\n')
-                         soundManager.playCarriageReturn()
-                         true
-                    } else {
-                        false
-                    }
-                },
+                .alpha(0f) 
+                .focusRequester(focusRequester),
             keyboardOptions = KeyboardOptions(
                 autoCorrect = false,
                 keyboardType = KeyboardType.Text,
@@ -161,7 +157,6 @@ fun TypingCanvas(
         )
     }
 
-    // Auto-focus the hidden field
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()
     }
